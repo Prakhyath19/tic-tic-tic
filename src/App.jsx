@@ -32,16 +32,19 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
       }
       xQ.enqueue(i);
       nextSquares[i] = `X`;
-    } else {
+      console.log("xQ: ", xQ);
+    } else if (xIsNext != true) {
       if (oQ.size() === 3) {
         nextSquares[oQ.items[0]] = null;
         oQ.dequeue();
       }
+      oQ.enqueue(i);
+      nextSquares[i] = `O`;
     }
-    oQ.enqueue(i);
-    nextSquares[i] = `O`;
-    // console.log("xQ: ", xQ);
-    // console.log("yQ: ", oQ);
+
+    console.log("xQ: ", xQ);
+    console.log("oQ: ", oQ);
+
     onPlay(nextSquares, !xIsNext);
   }
 
@@ -144,7 +147,7 @@ export default function Game() {
       return updatedHistory;
     });
     console.log("history\n", history);
-    setXIsNext(nextPlayer);
+    nextPlayer ? setXIsNext(true) : setXIsNext(false);
   }
 
   function resetBoard() {
