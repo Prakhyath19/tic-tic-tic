@@ -1,124 +1,75 @@
 import { useState } from "react";
+import { useEffect } from "react";
 
-function Square({ value, onSquareClick, tIdx }) {
-  // const [value, setValue] = useState(null);
-  // function handleClick(i) {
-  //   setValue("X");
-  // }
+function Square({ value, onSquareClick }) {
   return (
     <button
-      className="w-8 h-8 border p-8 text-xl  
-      text-justify"
+      className="w-8 h-8  flex items-center justify-center border p-8 text-xl  
+      "
       onClick={onSquareClick}
     >
       {value}
-      <sub>{tIdx}</sub>
     </button>
   );
 }
 
-function Board({ xIsNext, squares, onPlay, xQ, oQ, tIdx }) {
+function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
-    console.log("squares:", squares);
+    // console.log("squares:", squares);
 
     const nonNullLength = squares.filter((num) => num !== null).length;
-    console.log(nonNullLength);
-    // if (nonNullLength === 6) {
-    //   // if (xQ.size() === 3) {
-    //   //   xQ.dequeue();
-    //   // } else if (oQ.size() === 3) {
-    //   //   oQ.dequeue();
-    //   // }
-    //   // console.log(squares);
-    //   const counts = squares.reduce(
-    //     (acc, currVal) => {
-    //       if (currVal === "X") {
-    //         acc.X++;
-    //       } else if (currVal === "O") {
-    //         acc.O++;
-    //       }
-    //       return acc;
-    //     },
-    //     { X: 0, O: 0 }
-    //   );
-
-    //   console.log(`counts:${counts}`);
-    // }
+    console.log("nonNullLength", nonNullLength);
 
     const nextSquares = squares.slice();
 
     if (xIsNext) {
       if (xQ.size() === 3) {
-        // console.log("xQ-IDX:", xQ.items[0]);
-
         nextSquares[xQ.items[0]] = null;
         xQ.dequeue();
       }
       xQ.enqueue(i);
-      // nextSquares[i] = `X ${xQ.indexOf(i)}`;
       nextSquares[i] = `X`;
-      // setTIdx(xQ.indexOf(i));
-      // onPlay(nextSquares, xQ.indexOf(i));
     } else {
       if (oQ.size() === 3) {
         nextSquares[oQ.items[0]] = null;
         oQ.dequeue();
       }
-      oQ.enqueue(i);
-      nextSquares[i] = `O`;
-      // setTIdx(oQ.indexOf(i));
-      // onPlay(nextSquares, oQ.indexOf(i));
     }
-    // console.log(`tIdx: ${tIdx}`);
-
-    console.log("x len: ", xQ);
-    console.log("yQ: ", oQ);
-
-    // console.log(`nextSquares: ${nextSquares}, ${typeof nextSquares}`);
-    // console.log(`squares: ${squares} ${typeof squares}`);
-    // setSquares(nextSquares);
-    // setXIsNext(!xIsNext);
-    onPlay(nextSquares);
+    oQ.enqueue(i);
+    nextSquares[i] = `O`;
+    // console.log("xQ: ", xQ);
+    // console.log("yQ: ", oQ);
+    onPlay(nextSquares, !xIsNext);
   }
 
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = `Winner: ${winner}`;
-  }
-
-  // modify later. TODO
-  else if (
-    squares.length === 6 &&
-    squares.filter((num) => num !== null).length == 6
-  ) {
-    status = "Match Drawn";
+    status = `${winner} Wins! 🎉`;
   } else {
     status = `Next Player:` + (xIsNext ? "X" : "O");
-  }
-
-  function resetBoard() {
-    // xIsNext =
-    onPlay(Array(9).fill(null), true);
   }
   return (
     <div
       id="card"
-      className="p-10 px-20 bg-blue-100 rounded-xl flex flex-col items-center justify-center"
+      className="p-10 px-20 bg-black/30
+       text-white rounded-xl shadow-lg  shadow-black
+        flex flex-col items-center justify-center z-10"
     >
-      <h1 className=" text-4xl font-bold">Tic-Tac-Toe</h1>
+      <h1 className=" animate-bounce text-cyan-600 text-4xl font-bold">
+        Tic-Tac-Toe-2
+      </h1>
       <div>
-        <h2 className="text-3xl font-mono">Rules</h2>
-        <ol className="text-lg">
+        <h2 className="text-3xl underline font-mono text-slate-500">Rules</h2>
+        <ol className="text-lg text-slate-400">
           <li>1. Only three X's or O's are allowed at a time on the board. </li>
           <li>2. The oldest X or O will be removed after 3 chances.</li>
           <li>3. This game will not be a draw.</li>
         </ol>
       </div>
-      {/* <div className="border-t-2 border-black my-2 "></div> */}
       <div
         id="status-message"
         className="mt-2 font-mono text-xl  text-bold underline underline-offset-2 pb-1"
@@ -127,63 +78,27 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, tIdx }) {
       </div>
       <div
         id="board"
-        className=" 
+        className=" mt-4
       "
       >
         <div className="flex">
-          <Square
-            value={squares[0]}
-            onSquareClick={() => handleClick(0)}
-            tIdx={tIdx}
-          />
-          <Square
-            value={squares[1]}
-            onSquareClick={() => handleClick(1)}
-            tIdx={tIdx}
-          />
-          <Square
-            value={squares[2]}
-            onSquareClick={() => handleClick(2)}
-            tIdx={tIdx}
-          />
+          <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+          <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+          <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
         </div>
         <div className="flex  ">
-          <Square
-            value={squares[3]}
-            onSquareClick={() => handleClick(3)}
-            tIdx={tIdx}
-          />
-          <Square
-            value={squares[4]}
-            onSquareClick={() => handleClick(4)}
-            tIdx={tIdx}
-          />
-          <Square
-            value={squares[5]}
-            onSquareClick={() => handleClick(5)}
-            tIdx={tIdx}
-          />
+          <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
+          <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+          <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
         </div>
         <div className="flex ">
-          <Square
-            value={squares[6]}
-            onSquareClick={() => handleClick(6)}
-            tIdx={tIdx}
-          />
-          <Square
-            value={squares[7]}
-            onSquareClick={() => handleClick(7)}
-            tIdx={tIdx}
-          />
-          <Square
-            value={squares[8]}
-            onSquareClick={() => handleClick(8)}
-            tIdx={tIdx}
-          />
+          <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+          <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+          <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
         </div>
       </div>
       <button
-        className="mt-2 rounded-xl bg-blue-400 px-3 py-1 hover:bg-blue-600"
+        className="rounded-lg  mt-3 text-slate-200 font-semibold bg-blue-700 px-3 py-1 hover:bg-blue-800"
         onClick={() => {
           resetBoard();
         }}
@@ -216,38 +131,42 @@ export default function Game() {
     }
   }
   const [xIsNext, setXIsNext] = useState(true);
-  const [tIdx, setTIdx] = useState(0);
   const [xQ, setxQ] = useState(new Queue());
   const [oQ, setoQ] = useState(new Queue());
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const currentSquares = history[history.length - 1];
 
-  // const xQ = new Queue();
-  // const oQ = new Queue();
-
-  function handlePlay(nextSquares, isReset = false, tIdx) {
-    setHistory([...history, nextSquares]);
-    console.log(...history, nextSquares);
-    isReset ? setXIsNext("X") : setXIsNext(!xIsNext);
-    setTIdx(tIdx);
+  function handlePlay(nextSquares, nextPlayer) {
+    console.log("nextSqaures\n", nextSquares);
+    setHistory((prevHistory) => {
+      const updatedHistory = [...prevHistory, nextSquares];
+      // console.log("upHistory", updatedHistory);
+      return updatedHistory;
+    });
+    console.log("history\n", history);
+    setXIsNext(nextPlayer);
   }
+
+  function resetBoard() {
+    setHistory([Array(9).fill(null)]);
+    handlePlay(Array(9).fill(null), true);
+    setxQ(new Queue());
+    setoQ(new Queue());
+  }
+
   return (
     <>
       <div
-        className=" min-h-screen bg-black \
-      flex items-center justify-center
-    
-    
-      
-      "
+        className=" min-h-screen bg-black/90 bg-gradient-to-br
+          to-blue-950 flex items-center justify-center"
       >
         <Board
           xIsNext={xIsNext}
           squares={currentSquares}
           onPlay={handlePlay}
+          resetBoard={resetBoard}
           xQ={xQ}
           oQ={oQ}
-          tIdx={tIdx}
         />
       </div>
     </>
