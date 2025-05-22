@@ -56,11 +56,17 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
     status = `Next Player:` + (xIsNext ? "X" : "O");
   }
   return (
+    // <div
+    //   id="card"
+    //   className="p-10 px-20 bg-black/30
+    //    text-white rounded-xl shadow-lg  shadow-black
+    //     flex flex-col items-center justify-center z-10"
+    // >
     <div
       id="card"
-      className="p-10 px-20 bg-black/30
+      className="p-8 px-5 bg-black/30
        text-white rounded-xl shadow-lg  shadow-black
-        flex flex-col items-center justify-center z-10"
+        flex flex-col items-center justify-center"
     >
       <h1 className=" animate-bounce text-cyan-600 text-4xl font-bold">
         Tic-Tac-Toe-2
