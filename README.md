@@ -16,6 +16,7 @@ There is a home page with options of online or offline.
 
 #### Plan to execute:
 
-- Use WebSockets to establish a full-duplex connection.
-- React-router-dom for multipage navigation.
-- All the moves are first sent to mongo and then sent to board, enabling multiplayer.
+- [] Create a new branch in git named: multiPlayer.
+- [] Use WebSockets to establish a full-duplex connection.
+- [] React-router-dom for multipage navigation.
+- [] All the moves are first sent to mongo and then sent to board, enabling multiplayer.
