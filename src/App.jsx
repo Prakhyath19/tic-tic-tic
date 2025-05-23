@@ -1,6 +1,79 @@
 import { useState } from "react";
-import { useEffect } from "react";
+// import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router";
+import { Home } from "lucide-react";
 
+const AppLayout = ({ children }) => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <div
+        className="min-h-screen bg-black/90 
+        bg-gradient-to-b to-blue-950
+        flex-col items-center justify-center
+        
+          "
+      >
+        <div className="flex items-center justify-center py-5">
+          <div className="">
+            <button
+              onClick={() => {
+                navigate("/");
+              }}
+              className="px-3 cursor-pointer"
+            >
+              <Home color="cyan" size={18} className="" />
+            </button>
+          </div>
+          <h1
+            className=" animate-bounce text-cyan-600
+           text-4xl text-center font-bold"
+          >
+            Tic-Tac-Toe-2
+          </h1>
+        </div>
+        <div className="">{children}</div>
+      </div>
+    </>
+  );
+};
+function HomePage() {
+  return (
+    <div className="flex-col items-center justify-center text-center">
+      <h1 className="text-white mb-2 text-xl">
+        A new Version of the game that never draws.
+      </h1>
+      {/* <Game /> */}
+      {/* <hr className="text-sl" /> */}
+      {/* <h2 className="text-white font-semibold text-2xl">Select mode</h2> */}
+      {/* <div className="flex items-center justify-evenly">
+        <Link
+          to="/offline"
+          className="bg-blue-400 hover:bg-blue-500 cursor-pointer   px-4 py-2 rounded-md "
+          // onClick={() => console.log("Offline Clicked")}
+        >
+          Offline
+        </Link>
+        <Link
+          to="/online"
+          className="bg-blue-400 hover:bg-blue-500 cursor-pointer   px-4 py-2 rounded-md "
+          // onClick={() => console.log("Online Clicked")}
+        >
+          Online
+        </Link>
+      </div> */}
+      <Game />
+    </div>
+  );
+}
+
+function Result() {
+  return (
+    <div>
+      <div></div>
+    </div>
+  );
+}
 function Square({ value, onSquareClick }) {
   return (
     <button
@@ -13,7 +86,17 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
+function Board({
+  xIsNext,
+  squares,
+  onPlay,
+  xQ,
+  oQ,
+  resetBoard,
+  isOnline,
+  isHome = true,
+}) {
+  console.log(`isOnline: ${isOnline}`);
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {
       return;
@@ -55,22 +138,20 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
   } else {
     status = `Next Player:` + (xIsNext ? "X" : "O");
   }
+  {
+    isHome ? (status = "Start Game") : (status = status);
+  }
+
   return (
-    // <div
-    //   id="card"
-    //   className="p-10 px-20 bg-black/30
-    //    text-white rounded-xl shadow-lg  shadow-black
-    //     flex flex-col items-center justify-center z-10"
-    // >
     <div
       id="card"
       className="p-8 px-5 bg-black/30
        text-white rounded-xl shadow-lg  shadow-black
         flex flex-col items-center justify-center"
     >
-      <h1 className=" animate-bounce text-cyan-600 text-4xl font-bold">
+      {/* <h1 className=" animate-bounce text-cyan-600 text-4xl font-bold">
         Tic-Tac-Toe-2
-      </h1>
+      </h1> */}
       <div>
         <h2 className="text-3xl underline font-mono text-slate-500">Rules</h2>
         <ol className="text-lg text-slate-400">
@@ -81,10 +162,36 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
       </div>
       <div
         id="status-message"
-        className="mt-2 font-mono text-xl  text-bold underline underline-offset-2 pb-1"
+        className="mt-2 font-mono animate-pulse text-xl text-bold underline underline-offset-2 pb-1"
       >
         {status}
       </div>
+      {isHome ? (
+        <div className="flex w-full items-center justify-evenly">
+          <div>
+            <Link
+              to="/offline"
+              className="bg-blue-400 hover:bg-blue-500
+             cursor-pointer   px-4 py-2 rounded-md "
+              // onClick={() => (isHome = false)}
+            >
+              Offline
+            </Link>
+          </div>
+          <div>
+            <Link
+              to="/online"
+              className="bg-blue-400 hover:bg-blue-500 cursor-pointer   px-4 py-2 rounded-md "
+              // onClick={() => console.log("Online Clicked")}
+            >
+              Online
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+
       <div
         id="board"
         className=" mt-4
@@ -106,19 +213,28 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
           <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
         </div>
       </div>
-      <button
-        className="rounded-lg  mt-3 text-slate-200 font-semibold bg-blue-700 px-3 py-1 hover:bg-blue-800"
-        onClick={() => {
-          resetBoard();
-        }}
-      >
-        Reset
-      </button>
+      {isHome ? (
+        <div></div>
+      ) : (
+        <button
+          className="rounded-lg  mt-3 text-slate-200
+          font-semibold bg-blue-700 px-3 py-1
+        hover:bg-blue-800
+          transition duration-300 ease-in-out
+          transform hover:scale-105
+          "
+          onClick={() => {
+            resetBoard();
+          }}
+        >
+          Reset
+        </button>
+      )}
     </div>
   );
 }
 
-export default function Game() {
+function Game({ isOnline, isHome }) {
   class Queue {
     constructor() {
       this.items = [];
@@ -165,20 +281,130 @@ export default function Game() {
 
   return (
     <>
-      <div
+      {/* <div
         className=" min-h-screen bg-black/90 bg-gradient-to-br
           to-blue-950 flex items-center justify-center"
-      >
-        <Board
-          xIsNext={xIsNext}
-          squares={currentSquares}
-          onPlay={handlePlay}
-          resetBoard={resetBoard}
-          xQ={xQ}
-          oQ={oQ}
-        />
-      </div>
+      > */}
+      <Board
+        xIsNext={xIsNext}
+        squares={currentSquares}
+        onPlay={handlePlay}
+        resetBoard={resetBoard}
+        xQ={xQ}
+        oQ={oQ}
+        isOnline={isOnline}
+        isHome={isHome}
+      />
+      {/* </div> */}
     </>
+  );
+}
+function Offline() {
+  return (
+    <>
+      <Game isOnline={false} isHome={false} />;
+    </>
+  );
+}
+function ShowOnlineMenu() {
+  const [room, setRoom] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-evenly">
+        <button className="bg-blue-300 hover:bg-blue-500 rounded-md px-4 py-2">
+          Create Room
+        </button>
+        <button
+          className="bg-blue-300 hover:bg-blue-500 rounded-md px-4 py-2"
+          onClick={() => {
+            setRoom(true);
+          }}
+        >
+          Join room
+        </button>
+      </div>
+      {!room ? (
+        <div></div>
+      ) : (
+        <div
+          className="flex w-full items-center justify-center
+         mt-5"
+        >
+          <div>
+            <input
+              type="text"
+              className="border rounded-md
+               border-white text-white font-semibold
+               p-2 mr-4
+               "
+              placeholder="Enter Room code"
+            />
+          </div>
+
+          <button
+            // type="button"
+            className="text-white rounded-md
+             bg-green-500 hover:bg-green-600
+              px-4 py-2"
+          >
+            Enter
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+function Online() {
+  return (
+    <>
+      {/* <ShowOnlineMenu /> */}
+      {/* <Game isOnline={true} />; */}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-100">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <AppLayout>
+                <HomePage />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/offline"
+            element={
+              <AppLayout>
+                <Offline />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/online"
+            element={
+              <AppLayout>
+                <ShowOnlineMenu />
+              </AppLayout>
+            }
+          />
+          {/* <Route path = "/Result" element = {<AppLayout><Online/></AppLayout>} /> */}
+        </Routes>
+      </div>
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+      `}</style>
+    </BrowserRouter>
   );
 }
 
