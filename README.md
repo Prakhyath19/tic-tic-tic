@@ -18,4 +18,4 @@ There is a home page with options of online or offline.
 
 - Use WebSockets to establish a full-duplex connection.
 - React-router-dom for multipage navigation.
-- All the moves are first sent to mongo and then sent to board, enabling multiplayer.
+- Add more animations using https://animate.style 
