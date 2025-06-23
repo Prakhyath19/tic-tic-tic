@@ -145,7 +145,7 @@ function Board({
   return (
     <div
       id="card"
-      className="p-8 px-5 bg-black/30
+      className="p-4 px-5 bg-black/30
        text-white rounded-xl shadow-lg  shadow-black
         flex flex-col items-center justify-center"
     >
@@ -326,29 +326,32 @@ function ShowOnlineMenu() {
       {!room ? (
         <div></div>
       ) : (
-        <div
-          className="flex w-full items-center justify-center
-         mt-5"
-        >
-          <div>
-            <input
-              type="text"
-              className="border rounded-md
-               border-white text-white font-semibold
-               p-2 mr-4
-               "
-              placeholder="Enter Room code"
-            />
-          </div>
-
-          <button
-            // type="button"
-            className="text-white rounded-md
-             bg-green-500 hover:bg-green-600
-              px-4 py-2"
+        <div>
+          <div
+            className="flex w-full items-center justify-center
+           mt-5"
           >
-            Enter
-          </button>
+            <div>
+              <input
+                type="text"
+                className="border rounded-md
+                 border-white text-white font-semibold
+                 p-2 mr-4
+                 "
+                placeholder="Enter Room code"
+              />
+            </div>
+            <button
+              // type="button"
+              className="text-white rounded-md
+               bg-green-500 hover:bg-green-600
+                px-4 py-2"
+            >
+              Enter
+            </button>
+          </div>
+          {/* Include the status message of the join room or create room request. */}
+          <div></div>
         </div>
       )}
     </div>

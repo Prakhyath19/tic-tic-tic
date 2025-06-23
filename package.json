@@ -29,5 +29,18 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "vite": "^6.3.5"
-  }
+  },
+  "description": "The game is live at https://tic-tac-toe-2-0ftu.onrender.com/",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prakhyath19/tic-tic-tic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Prakhyath19/tic-tic-tic/issues"
+  },
+  "homepage": "https://github.com/Prakhyath19/tic-tic-tic#readme"
 }
