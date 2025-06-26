@@ -18,4 +18,8 @@ There is a home page with options of online or offline.
 
 - Use WebSockets to establish a full-duplex connection.
 - React-router-dom for multipage navigation.
-- Add more animations using https://animate.style 
+
+#### Todos
+
+- [] Add more animations using https://animate.style 
+- [] Add a theme toggler at the top right corner of the board
