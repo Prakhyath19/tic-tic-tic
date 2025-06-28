@@ -4,7 +4,7 @@ import { useEffect } from "react";
 function Square({ value, onSquareClick }) {
   return (
     <button
-      className="w-10 h-10 md:w-18 md:h-18  flex items-center justify-center border p-4 text-md md:text-xl  
+      className="w-12 h-12 md:w-18 md:h-18  flex items-center justify-center border p-4 text-lg md:text-xl  
       "
       onClick={onSquareClick}
     >
