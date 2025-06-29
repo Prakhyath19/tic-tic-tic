@@ -87,7 +87,11 @@ function Board({
       <div className=" absolute top-2 right-2">
         {/* <div>Hello</div> */}
         {/* <div>hello</div> */}
-        <Tooltip content="Toogle Dark mode" placement="top-right">
+        <Tooltip
+          content="Toogle Dark mode"
+          placement="top-right"
+          className="text-white bg-black"
+        >
           <Button
             type="button"
             className="text-lg cursor-pointer px-2"
