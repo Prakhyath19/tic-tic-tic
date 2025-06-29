@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { IoMdMoon } from "react-icons/io";
+import { MdOutlineLightMode } from "react-icons/md";
+import { Tooltip, Button } from "@material-tailwind/react";
 
 function Square({ value, onSquareClick }) {
   return (
@@ -13,13 +16,20 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
+function Board({
+  xIsNext,
+  squares,
+  onPlay,
+  xQ,
+  oQ,
+  resetBoard,
+  themeIcon,
+  themehandler,
+}) {
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
-    // console.log("squares:", squares);
-
     const nonNullLength = squares.filter((num) => num !== null).length;
     console.log("nonNullLength", nonNullLength);
 
@@ -55,6 +65,7 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
   } else {
     status = `Next Player:` + (xIsNext ? "X" : "O");
   }
+
   return (
     // <div
     //   id="card"
@@ -64,18 +75,46 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
     // >
     <div
       id="card"
-      className="px-4 py-4 md:py-8  md:px-5 bg-black/30
-       text-white rounded-xl shadow-lg  shadow-black
-        flex flex-col items-center justify-center"
+      className="
+      relative px-4 py-4
+      md:py-8 md:px-5
+    bg-slate-700 dark:bg-black/30
+    text-white rounded-xl shadow-lg  shadow-black
+      flex flex-col items-center justify-center
+      "
     >
-      <h1 className=" animate-bounce text-cyan-600 text-4xl font-bold">
+      {/* <div className="relative flex items-start justify-between"> */}
+      <div className=" absolute top-2 right-2">
+        {/* <div>Hello</div> */}
+        {/* <div>hello</div> */}
+        <Tooltip content="Toogle Dark mode" placement="top-right">
+          <Button
+            type="button"
+            className="text-lg cursor-pointer px-2"
+            onClick={() => themehandler()}
+          >
+            {themeIcon === "dark" ? <IoMdMoon /> : <MdOutlineLightMode />}
+          </Button>
+        </Tooltip>
+      </div>
+      {/* </div> */}
+
+      <h1
+        className="
+      animate-bounce text-cyan-600 text-4xl font-bold"
+      >
         Tic-Tac-Toe-2
       </h1>
+
       <div>
-        <h2 className="text-xl md:text-3xl underline font-mono text-slate-500">
+        <h2
+          className="
+        text-xl md:text-3xl underline 
+        font-mono text-black dark:text-slate-500"
+        >
           Rules
         </h2>
-        <ol className="text-md md:text-lg text-slate-400">
+        <ol className="text-md md:text-lg text-black/90 dark:text-slate-400">
           <li>1. Only three X's or O's are allowed at a time on the board. </li>
           <li>2. The oldest X or O will be removed after 3 chances.</li>
           <li>3. This game will not be a draw.</li>
@@ -105,7 +144,10 @@ function Board({ xIsNext, squares, onPlay, xQ, oQ, resetBoard }) {
         </div>
       </div>
       <button
-        className="rounded-lg  mt-3 text-slate-200 font-semibold bg-blue-700 px-3 py-1 hover:bg-blue-800"
+        className="rounded-lg  mt-3
+        text-slate-200 font-semibold 
+        bg-blue-700 px-3 py-1 hover:bg-blue-800
+        "
         onClick={() => {
           resetBoard();
         }}
@@ -142,6 +184,19 @@ export default function Game() {
   const [oQ, setoQ] = useState(new Queue());
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const currentSquares = history[history.length - 1];
+  const [theme, setTheme] = useState("dark");
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]); //runs only when the value of theme is changed.
+
+  function handleThemeToggle() {
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+  }
 
   function handlePlay(nextSquares, nextPlayer) {
     console.log("nextSqaures\n", nextSquares);
@@ -164,12 +219,14 @@ export default function Game() {
   return (
     <>
       <div
-        className=" min-h-screen min-w-screen
-         bg-black/90 bg-gradient-to-br
-        to-blue-950
-          flex items-center justify-center
-          overflow-hidden
-          "
+        className="min-h-screen min-w-screen
+        bg-gradient-to-br 
+        from-white to-gray-300
+        dark:from-black/90 
+        dark:to-blue-950
+        flex items-center justify-center
+        overflow-hidden
+        "
       >
         <Board
           xIsNext={xIsNext}
@@ -178,6 +235,8 @@ export default function Game() {
           resetBoard={resetBoard}
           xQ={xQ}
           oQ={oQ}
+          themeIcon={theme}
+          themehandler={handleThemeToggle}
         />
       </div>
     </>
