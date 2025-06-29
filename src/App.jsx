@@ -97,7 +97,7 @@ function Board({
             className="text-lg cursor-pointer px-2"
             onClick={() => themehandler()}
           >
-            {themeIcon === "dark" ? <IoMdMoon /> : <MdOutlineLightMode />}
+            {themeIcon === "dark" ? <MdOutlineLightMode /> : <IoMdMoon />}
           </Button>
         </Tooltip>
       </div>
